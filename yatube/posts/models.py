@@ -53,6 +53,7 @@ class Post(models.Model):
         verbose_name = 'Пост'
         verbose_name_plural = 'Посты'
 
+
 class Comment(models.Model):
     text = models.TextField(
         'Текст комментария',
@@ -80,6 +81,7 @@ class Comment(models.Model):
         ordering = ('-created', '-pk')
         verbose_name = 'Комментарий'
         verbose_name_plural = 'Комментарии'
+
 
 class Follow(models.Model):
     user = models.ForeignKey(

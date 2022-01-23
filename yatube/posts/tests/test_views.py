@@ -244,19 +244,22 @@ class PostPagesTests(TestCase):
         """Тестирование добавления и удаление подписки."""
         additional_username = self.additional_user.get_full_name()
         self.authorized_client.post(
-            reverse('posts:profile_follow', kwargs={'username': self.additional_user}),
+            reverse('posts:profile_follow', kwargs={
+                    'username': self.additional_user}),
             data={'username': additional_username}
         )
         username = self.user.get_full_name()
         self.guest_client.post(
-            reverse('posts:profile_follow', kwargs={'username': self.additional_user}),
+            reverse('posts:profile_follow', kwargs={
+                    'username': self.additional_user}),
             data={'username': username}
         )
         counter = Follow.objects.all().count()
         # проверка одной добавленной подписки от авторизованного пользователя
         self.assertEqual(counter, 1)
         self.authorized_client.delete(
-            reverse('posts:profile_unfollow', kwargs={'username': self.additional_user}),
+            reverse('posts:profile_unfollow', kwargs={
+                    'username': self.additional_user}),
             data={'username': additional_username}
         )
         counter = Follow.objects.all().count()
@@ -267,7 +270,8 @@ class PostPagesTests(TestCase):
         """Новая запись появляется только у подписанного пользователя."""
         additional_username = self.additional_user.get_full_name()
         self.authorized_client.post(
-            reverse('posts:profile_follow', kwargs={'username': self.additional_user}),
+            reverse('posts:profile_follow', kwargs={
+                    'username': self.additional_user}),
             data={'username': additional_username}
         )
         Post.objects.create(

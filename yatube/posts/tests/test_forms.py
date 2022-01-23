@@ -42,7 +42,6 @@ class PostFormTests(TestCase):
             author=cls.user,
             group=cls.group
         )
-        
 
     @classmethod
     def tearDownClass(cls):
