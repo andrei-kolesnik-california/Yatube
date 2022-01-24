@@ -46,13 +46,10 @@ def profile(request: HttpRequest, username: str) -> HttpResponse:
     page_obj = paginator.get_page(page_number)
     following = None
     if request.user.is_authenticated:
-        follow_list = Follow.objects.filter(
-            user=request.user).values_list('author', flat=True)
-        author_id = posts[0].author.id
-        if author_id not in follow_list:
-            following = False
-        else:
+        if Follow.objects.filter(user=request.user, author=author).exists():
             following = True
+        else:
+            following = False
     context = {
         'author': author,
         'page_obj': page_obj,
@@ -121,7 +118,7 @@ def post_detail(request, post_id):
         'posts_number': posts_number,
         'post': post,
         'comments': comments,
-        "form": form
+        'form': form
     }
     return render(request, 'posts/post_detail.html', context)
 
@@ -135,15 +132,13 @@ def add_comment(request, post_id):
         comment.author = request.user
         comment.post = post
         comment.save()
-    return redirect("posts:post_detail", post_id=post_id)
+    return redirect('posts:post_detail', post_id=post_id)
 
 
 @login_required
 def follow_index(request):
     """Получение списка выбранных постов из базы данных."""
-    follow_list = Follow.objects.filter(
-        user=request.user).values_list('author')
-    post_list = Post.objects.filter(author__id__in=follow_list)
+    post_list = Post.objects.filter(author__following__user=request.user)
     paginator = Paginator(post_list, POSTS_PER_PAGE)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -156,14 +151,14 @@ def follow_index(request):
 @login_required
 def profile_follow(request, username):
     author = User.objects.get(username=username)
-    if request.user != author and Follow.objects.filter(
-            user=request.user, author=author).count() == 0:
-        Follow.objects.create(user=request.user, author=author)
-    return redirect("posts:profile", username=username)
+    if request.user != author and not Follow.objects.filter(
+            user=request.user, author=author).exists():
+        Follow.objects.get_or_create(user=request.user, author=author)
+    return redirect('posts:profile', username=username)
 
 
 @login_required
 def profile_unfollow(request, username):
-    author = User.objects.get(username=username)
-    Follow.objects.get(user=request.user, author=author).delete()
-    return redirect("posts:profile", username=username)
+    author = get_object_or_404(User, username=username)
+    Follow.objects.filter(user=request.user, author=author).delete()
+    return redirect('posts:profile', username=username)

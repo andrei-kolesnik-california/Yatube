@@ -240,8 +240,8 @@ class PostPagesTests(TestCase):
         response_cleared = self.authorized_client.get(reverse('posts:index'))
         self.assertNotEqual(response.content, response_cleared.content)
 
-    def test_profile_follow_unfollow(self):
-        """Тестирование добавления и удаление подписки."""
+    def test_profile_follow(self):
+        """Тестирование добавления подписки."""
         additional_username = self.additional_user.get_full_name()
         self.authorized_client.post(
             reverse('posts:profile_follow', kwargs={
@@ -257,13 +257,23 @@ class PostPagesTests(TestCase):
         counter = Follow.objects.all().count()
         # проверка одной добавленной подписки от авторизованного пользователя
         self.assertEqual(counter, 1)
+
+    def test_profile_unfollow(self):
+        """Тестирование удаления подписки."""
+        username = self.additional_user.get_full_name()
+        self.authorized_client.post(
+            reverse('posts:profile_follow', kwargs={
+                    'username': self.additional_user}),
+            data={'username': username}
+        )
+        counter = Follow.objects.all().count()
+        self.assertEqual(counter, 1)
         self.authorized_client.delete(
             reverse('posts:profile_unfollow', kwargs={
                     'username': self.additional_user}),
-            data={'username': additional_username}
+            data={'username': username}
         )
         counter = Follow.objects.all().count()
-        # проверка удаления подписки
         self.assertEqual(counter, 0)
 
     def test_follow_index(self):
@@ -284,6 +294,8 @@ class PostPagesTests(TestCase):
         for object in response.context['page_obj']:
             if 'Тестовый текст!!!' == object.text:
                 result = True
+        # если пост с текстом найден в объекте ответа авторизованного юзера
+        # то тест будет пройден
         self.assertTrue(result)
         response = self.guest_client.get(reverse('posts:follow_index'))
         self.assertEqual(response.context, None)
