@@ -46,9 +46,9 @@ def profile(request: HttpRequest, username: str) -> HttpResponse:
     page_obj = paginator.get_page(page_number)
     following = None
     if request.user.is_authenticated:
-        if Follow.objects.filter(user=request.user, author=author).exists():
-            following = True
-        else:
+        following = Follow.objects.filter(
+            user=request.user, author=author).exists()
+        if not following:
             following = False
     context = {
         'author': author,
@@ -151,8 +151,7 @@ def follow_index(request):
 @login_required
 def profile_follow(request, username):
     author = User.objects.get(username=username)
-    if request.user != author and not Follow.objects.filter(
-            user=request.user, author=author).exists():
+    if request.user != author:
         Follow.objects.get_or_create(user=request.user, author=author)
     return redirect('posts:profile', username=username)
 
