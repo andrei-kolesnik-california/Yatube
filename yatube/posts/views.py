@@ -12,7 +12,7 @@ POSTS_PER_PAGE = 10
 
 def index(request: HttpRequest) -> HttpResponse:
     """Получение списка постов из базы данных."""
-    post_list = Post.objects.all()
+    post_list = Post.objects.all().select_related('author')
     paginator = Paginator(post_list, POSTS_PER_PAGE)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -25,7 +25,7 @@ def index(request: HttpRequest) -> HttpResponse:
 def group_posts(request: HttpRequest, slug: str) -> HttpResponse:
     """Получение списка постов из базы данных для указанной группы."""
     group = get_object_or_404(Group, slug=slug)
-    post_list = group.posts.all()
+    post_list = group.posts.all().select_related('author')
     paginator = Paginator(post_list, POSTS_PER_PAGE)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -40,20 +40,17 @@ def profile(request: HttpRequest, username: str) -> HttpResponse:
     """Получение списка постов из базы данных для указанного пользователя."""
     author = get_object_or_404(User, username=username)
     posts = Post.objects.filter(author__username=username)
-    posts_number = posts.count()
     paginator = Paginator(posts, POSTS_PER_PAGE)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    following = None
+    following = False
     if request.user.is_authenticated:
         following = Follow.objects.filter(
             user=request.user, author=author).exists()
-        if not following:
-            following = False
     context = {
         'author': author,
         'page_obj': page_obj,
-        'posts_number': posts_number,
+        'posts_number': paginator.count,
         'following': following
     }
     return render(request, 'posts/profile.html', context)
@@ -109,10 +106,11 @@ def post_edit(request: HttpRequest, post_id: int) -> HttpResponse:
 
 def post_detail(request, post_id):
     """Получение выбранного поста из базы данных."""
-    post = get_object_or_404(Post, pk=post_id)
+    post = get_object_or_404(
+        Post.objects.select_related('author', 'group'), pk=post_id)
     username = post.author.username
     posts_number = Post.objects.filter(author__username=username).count()
-    comments = Comment.objects.filter(post_id=post_id)
+    comments = Comment.objects.filter(post_id=post_id).select_related('author')
     form = CommentForm(request.POST or None)
     context = {
         'posts_number': posts_number,

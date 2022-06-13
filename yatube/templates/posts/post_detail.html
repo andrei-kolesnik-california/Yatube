@@ -33,7 +33,7 @@
           <img class="card-img my-2" src="{{ im.url }}">
         {% endthumbnail %}
         <p>
-          {{ post }}
+          {{ post.text }}
         </p>
         <a class="btn btn-primary" href="{% url 'posts:post_edit' post.pk %}">
           редактировать запись

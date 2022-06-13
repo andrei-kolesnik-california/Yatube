@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load thumbnail %} 
 {% block title %} 
-Профайл пользователя {{ author.get_full.name }}
+Профайл пользователя {{ author.get_full_name }}
 {% endblock %} 
 {% block content %}
 <div class="container py-5">
@@ -14,7 +14,7 @@
     >
       Отписаться
     </a>
-  {% elif following == False %}
+  {% else %}
       <a
         class="btn btn-lg btn-primary"
         href="{% url 'posts:profile_follow' author.username %}" role="button"
@@ -41,6 +41,7 @@
     <hr />
     {% endif %} 
     {% endfor %} 
+  </article>
     {% include 'posts/includes/paginator.html' %} 
 </div>
 {% endblock %}
