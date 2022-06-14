@@ -14,7 +14,7 @@ Python 3.8.3 Django 2.2.16
 ### Запуск проекта в dev-режиме
 клонируйте репозиторий 
 ```
-git clone git@github.com:andrey-kolesnik-moscow/hw05_final.git
+git clone git@github.com:andrey-kolesnik-moscow/Yatube.git
 ```
 создайте и активируйте виртуальное окружение
 ```
