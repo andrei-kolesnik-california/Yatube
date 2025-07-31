@@ -1,3 +1,4 @@
+<a id="top"></a>
 # 🧪 Yatube Platform Testing Documentation
 
 [![Test Coverage](https://img.shields.io/badge/Test%20Coverage-98%25-brightgreen.svg)](tests/)
@@ -195,4 +196,4 @@ The test suite is optimized for:
 
 ---
 
-[Back to Top](#anchor)
+[⬆️ Back to Top](#top)

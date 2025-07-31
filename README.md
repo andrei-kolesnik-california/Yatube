@@ -1,3 +1,4 @@
+<a id="top"></a>
 # 🚀 Yatube — Social Blogging Platform
 
 [![Python](https://img.shields.io/badge/Python-3.8.3-blue.svg)](https://www.python.org/)
@@ -159,12 +160,20 @@ Yatube/
 
 ## 👨‍💻 Author
 
-**Andrey Kolesnik** - [GitHub Profile](https://github.com/andrey-kolesnik-moscow)
+**Andrey Kolesnik** - [GitHub Profile](https://github.com/andrey-kolesnik-california)
 
 ---
 
 <div align="center">
 
 ⭐ **Star this repository if you found it helpful!** ⭐
+
+</div>
+
+---
+
+<div align="center">
+
+[⬆️ Back to Top](#top)
 
 </div>
