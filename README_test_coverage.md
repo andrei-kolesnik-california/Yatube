@@ -93,7 +93,7 @@ When creating a post with a specified group, the post must appear on:
 
 1. **Clone the repository**
    ```bash
-   git clone git@github.com:andrey-kolesnik-moscow/hw04_tests.git
+   git clone git@github.com:andrei-kolesnik-california/hw04_tests.git
    cd hw04_tests
    ```
 

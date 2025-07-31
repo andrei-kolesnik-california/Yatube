@@ -53,7 +53,7 @@
 
 1. **Clone the repository**
    ```bash
-   git clone git@github.com:andrey-kolesnik-moscow/Yatube.git
+   git clone git@github.com:andrei-kolesnik-california/Yatube.git
    cd Yatube
    ```
 
@@ -160,7 +160,7 @@ Yatube/
 
 ## 👨‍💻 Author
 
-**Andrey Kolesnik** - [GitHub Profile](https://github.com/andrey-kolesnik-california)
+**Andrei Kolesnik** - [GitHub Profile](https://github.com/andrei-kolesnik-california)
 
 ---
 
